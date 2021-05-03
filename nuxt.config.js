@@ -16,7 +16,6 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: 'https://lh3.googleusercontent.com/proxy/PL6_PGZuQ3dz6WgOSPn9qJ5P4uaAJlEmJ9MvEKCzMsX_3pHadf60koRcLvnB4sxiVveO3cgTK4LXpPZV452EMVgApNZuMKomawY9uH7dAcBv1fwgWNwjKpBRic9UWXrnGM5FC4wom3KiybYnUeDEbA' },
       { rel: "stylesheet", type: "text/css", href: "https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" },
-      
     ],
     
   },
@@ -53,7 +52,6 @@ export default {
      }],
      //'nuxt-socket-io',
      '@nuxtjs/auth',
-     
   ],
 
   env:{

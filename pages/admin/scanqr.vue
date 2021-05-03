@@ -35,7 +35,6 @@
 <script>
 
 import scanned from '@/components/officer/scannedowner'
-
 export default {
     middleware:['admin-auth'],
     components:{
