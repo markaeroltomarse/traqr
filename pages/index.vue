@@ -4,8 +4,9 @@
     <div class="content">
       <div class="p-5 text-center">
         <v-img :src="require('@/static/img1.svg')"/>
-        <h3>Ticketing System</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus vel quo, alias placeat maxime labore.</p>
+        <br>
+        <h3>Violation Ticketing System</h3>
+        <p class="text-secondary">MMDA Online Application for road violator with QR Code.</p>
         <v-btn small block color="success mb-2" @click="isLogin = true">
           LOGIN
         </v-btn>
@@ -33,7 +34,7 @@ export default {
     }
   },
   components: {
-   login
+    login
   }
 }
 </script>
