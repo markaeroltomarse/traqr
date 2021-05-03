@@ -57,11 +57,12 @@ export default {
     },
     methods:{
         async onDecode(serial_number){
-            //alert(decodeString)
+            
             let res = await this.$axios.post('/officer/findowner', {serial_number})
             this.scannow = false
             if(!res.data.result){
-                return this.err = 'No owner found'
+                //This message will appear when the QR code of the car not found into database.
+                return this.err = 'Owner not found, Please register the car or try to scan it again.'
             }
 
             this.owner = res.data.owner
