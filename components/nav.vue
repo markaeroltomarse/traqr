@@ -39,6 +39,7 @@ export default {
         width:100%;
         z-index: 10;
         padding:0.5em 30%;
+        z-index: 1000;
     }
 
     @media only screen and (max-width: 360px) {

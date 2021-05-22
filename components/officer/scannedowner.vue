@@ -1,5 +1,12 @@
 <template>
   <section class="overlay bg-light" data-aos="fade-up">
+
+    <section class="imgzoom overlay text-center" v-if="imgzoom">
+        <v-img :src="require('@/assets/uploads/' + owner.driverlicenseimg)" @dblclick="imgzoom = false"/>
+        <v-btn small @click="imgzoom = false">
+            Close
+        </v-btn>
+    </section>
     <div class="bg-white rounded shadow-sm rounded p-3 " style="margin-bottom:5em;">
 
         <v-btn small fab style="float:right;" @click="$emit('close')">
@@ -14,6 +21,10 @@
         
         <p><b>Owner information</b></p>
         
+        <div class="license-img" :style="{backgroundImage:`url('${require('@/assets/uploads/' + owner.driverlicenseimg)}')`}" @click="imgzoom = true">
+
+        </div>
+
         <v-text-field
             rounded
             outlined
@@ -109,9 +120,14 @@
         />
 
         <div class="p-5 shadow-sm rounded  border" :style="`background-color:${owner.color};`">
-
+            
         </div>
         <hr>
+        
+        <v-btn block color="primary" v-if="$auth.user.userType == 'admin'" @click="approve">
+            Approve Registration
+        </v-btn>
+        
         <form @submit.prevent="submit" v-if="$auth.user.userType == 'officer'">
             <v-text-field
                 rounded
@@ -150,19 +166,26 @@ export default {
     data(){
         return {
             violation:{
-                ownerID:this.owner._id,
+                ownerID:'',
                 violation_code:'',
                 penalty:'',
-                from:this.$auth.user._id
+                from:''
             },
             scansound:null,
+            imgzoom:false,
         }
     },
     props:{
-        owner:Object
+        owner:{
+            type:Object,
+            
+        }
     },
     methods:{
         async submit(){
+
+            this.violation.ownerID = this.owner._id
+            this.violation.from = this.$auth.user._id
             console.log(this.violation)
             this.$store.commit('G_LOADER', true)
 
@@ -173,7 +196,22 @@ export default {
             if(res.data.result){
                 this.$emit('close')
             }
+        },
+
+        async approve(){
+            this.$store.commit("G_LOADER", true)
+            try{
+                let res = await this.$axios.post('/officer/approveowner', {_id:this.owner._id})
+
+                this.$store.commit("G_LOADER", false)
+                this.$emit('close')
+                this.$emit('refresh')
+            }catch(err){
+                alert('Connection time out')
+            }
         }
+
+        
     },
  
 }
@@ -181,10 +219,44 @@ export default {
 
 <style scoped>
     .overlay{
-        z-index:30;
-        padding:1em 10px;
-        margin-top:18%;
+        z-index:100;
+        
         overflow-y: scroll;
         
     }
+
+    .imgzoom{
+        padding:5% 10%;
+    }
+
+    .license-img {
+        width: 50%;
+        height: 170px;
+        background-position: center;
+        background-color: #f2f2f2;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border:1px solid silver;
+        border-radius: 5px;
+        margin:1em 0px;
+    }
+
+    @media only screen and (max-width: 360px) {
+        .license-img {
+            width: 100%;
+            
+        }
+        .overlay{
+            padding:1em 0px;
+            height: 100vh;
+        }
+        
+        .imgzoom{
+            padding:30% 0%;
+            
+        }
+        
+    }
+
+    
 </style>

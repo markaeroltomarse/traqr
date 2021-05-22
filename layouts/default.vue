@@ -1,9 +1,9 @@
 <template>
   <v-app class="mainFont bg-light">
-    <navs v-on:openSB="ownerSB = true"/>
-    <ownerSidebar v-on:close="ownerSB = false" v-if="$auth.loggedIn && $auth.user.userType == 'owner' && ownerSB"/>
-    <officerSidebar v-on:close="ownerSB = false" v-if="$auth.loggedIn && $auth.user.userType == 'officer' && ownerSB"/>
-    <adminSidebar v-on:close="ownerSB = false" v-if="$auth.loggedIn && $auth.user.userType == 'admin' && ownerSB"/>
+    <navs v-on:openSB="openSB"/>
+    <ownerSidebar v-on:close="userSB = false" v-if="$auth.loggedIn && $auth.user.userType == 'owner' && userSB "/>
+    <officerSidebar v-on:close="userSB = false" v-if="$auth.loggedIn && $auth.user.userType == 'officer' && userSB"/>
+    <adminSidebar v-on:close="userSB = false" v-if="$auth.loggedIn && $auth.user.userType == 'admin' && userSB"/>
     
     <gloader/>
     <nuxt/>
@@ -20,11 +20,22 @@ import gloader from '@/components/global-loader.vue'
 export default {
   data () {
     return {
-      ownerSB:false
+      userSB:false
     }
   },
   components:{
     navs, gloader, ownerSidebar, officerSidebar, adminSidebar
+  },
+
+  methods:{
+    openSB(){
+      this.userSB = !this.userSB
+      
+    }
   }
 }
 </script>
+
+<style>
+  
+</style>

@@ -1,10 +1,12 @@
 export default ({$auth, redirect}) => {
     try{
-        console.log('MIddle ware auth')
+        
         if($auth.loggedIn){
             if($auth.user.userType != 'owner'){
                 return redirect('/')
             }
+
+            if(!$auth.user.approved) return redirect('/owner/pending')
         }else{
             redirect('/')
         }

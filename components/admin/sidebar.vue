@@ -43,6 +43,10 @@
                   Violations Record
               </v-btn>
 
+              <v-btn color="success" block rounded class="my-3" to="/admin/registered">
+                  Pending Registered
+              </v-btn>
+
               <hr>
 
               <v-btn color="success" block rounded class="my-3" to="/admin/scanqr">

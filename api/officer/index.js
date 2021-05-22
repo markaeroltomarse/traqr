@@ -91,5 +91,28 @@ router.get('/violations', async (req, res) => {
     }
 })
 
+router.get('/registered', async (req, res) => {
+    try{
+        
+        let registered = await Owners.find({approved:false})
+
+        res.json({registered, result:true})
+    }catch(err){
+        console.log(err)
+    }
+})
+
+router.post('/approveowner', async (req, res) => {
+    try{
+        console.log(req.body)
+        await Owners.updateOne({_id:req.body._id}, {approved:true})
+
+        res.json({result:true})
+    }catch(err){
+        console.log(err)
+        res.json({err, result:false})
+    }
+})
+
 
 module.exports = router

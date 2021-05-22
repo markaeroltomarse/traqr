@@ -205,7 +205,7 @@
 
             <v-stepper-content step="3">
             
-                <form @submit.prevent="submit3">
+                <form @submit.prevent="submit3" enctype="multipart/form-data">
                     
                     <v-text-field
                         type="email"
@@ -225,7 +225,6 @@
                         required
                         outlined
                         v-model="passagain"
-                        
                     />
 
                     <v-text-field
@@ -238,7 +237,18 @@
                         :background-color="owner.password == passagain & owner.password != '' ? 'success' : null"
                         :disabled="passagain == ''"
                     />
+                    
+                    <div class="license-img" :style="{backgroundImage:`url('${imgSelected}')`}">
 
+                    </div>
+
+                    <v-btn small color="primary" @click="$refs.licenseimg.click()">
+                        Upload Driver License (image)
+                    </v-btn>
+
+                    <input type="file" @change="selectedFile" hidden ref="licenseimg">
+                    
+                    <hr>
                     <!-- @click="e6 = 4" -->
                     <v-btn
                         color="success"
@@ -257,6 +267,9 @@
 </template>
 
 <script>
+
+
+
 export default {
     data () {
       return {
@@ -274,11 +287,20 @@ export default {
             type_fuel:'DIESEL',
             type_body:'SEDAN',
             series:'',
-            color:'red'
+            color:'red',
+            driverlicenseimg:null,
         },
 
         submitted:false,
-        invalids:[]
+        invalids:[],
+
+
+        driverlicenseimg:'',
+
+        selectedFileimg:null,
+        imgSelected:'',
+
+        
       }
     },
 
@@ -291,7 +313,26 @@ export default {
             this.e6 = 3
         },
 
-        submit3(){
+        selectedFile(event){
+            this.invalids = []
+            console.log(event.target.files[0])
+            this.selectedFileimg = null
+            this.imgSelected = ''
+            try{
+                let allowedimg = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+                if(!allowedimg.includes('image/'+event.target.files[0].name.split('.').pop())) return this.invalids.push('File is not an image') 
+                if(event.target.files[0].size > 600000) return this.invalids.push('Image size is too big!')
+                
+                this.selectedFileimg = event.target.files[0]
+                this.imgSelected = URL.createObjectURL(event.target.files[0])
+            }catch(err){
+                console.log(err)
+            }
+            
+            
+        },
+
+        async submit3(){
             this.e6 = 4
 
             this.$store.commit("G_LOADER", true)
@@ -301,16 +342,34 @@ export default {
                 this.$store.commit("G_LOADER", false)
                 return this.invalids.push('Password must be match')
             }
+            
+            
+            if(this.selectedFileimg == null){
+                this.$store.commit("G_LOADER", false)
+                return this.invalids.push('Please Select Or insert your License Driver image')
+            }
+
+            const licenseimg = new FormData()
+            licenseimg.append('licenseimg', this.selectedFileimg)
+            
+            this.owner.driverlicenseimg = '.' + this.selectedFileimg.name.split('.').pop()
 
             this.$axios.post('/owner/new', this.owner)
-            .then(res => {
+            .then(async res => {
                 this.$store.commit("G_LOADER", false)
 
-                if(res.data.result) {
+                if(!res.data.result) {
+                    
+                    return this.invalids = res.data.invalids
+                }
+                console.log("ownder information", res.data)
+                let resfile = await this.$axios.post('/owner/singleupload?filename='+res.data.filename, licenseimg)
+                
+                if(resfile.data.result) {
                     this.submitted = true
                     return 
                 }
-                
+
                 this.invalids = res.data.invalids
                 console.log(this.invalids)
             })
@@ -322,10 +381,31 @@ export default {
 
 
         
-    }
+    },
+
+    
 }
 </script>
 
-<style>
+<style scoped>
+    .license-img {
+        width: 50%;
+        height: 170px;
+        background-position: center;
+        background-color: #f2f2f2;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        border:1px solid silver;
+        border-radius: 5px;
+        margin:1em 0px;
+    }
 
+
+    @media only screen and (max-width: 360px) {
+        .license-img {
+            width: 100%;
+            
+        }
+        
+    }
 </style>

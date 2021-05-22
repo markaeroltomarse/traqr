@@ -107,6 +107,11 @@ let Owners = new Schema({
         default:today
     },
 
+    driverlicenseimg:{
+        type:String,
+        required:true
+    },
+
     images:{
         photos:{
             type:[String],
@@ -118,6 +123,12 @@ let Owners = new Schema({
             default:''
         },
     },
+
+    approved:{
+        type:Boolean,
+        require:false,
+        default:false,
+    }
 
     
 }, {strict:false})
