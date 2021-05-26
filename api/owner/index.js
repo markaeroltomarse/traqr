@@ -13,7 +13,7 @@ function upload(filename){
     
     let storage = multer.diskStorage({
         destination: function (req, file, cb) {           
-          cb(null, path.join(__dirname, `../../assets/uploads/`)) // 
+          cb(null, `./assets/uploads/`) // 
         },
         filename: function (req, file, cb) {
             console.log(file)
@@ -64,17 +64,24 @@ router.post('/singleupload',  async (req, res) => {
     let invalids = []
     const filename = req.query.filename
     
-    upload(filename).single('licenseimg')(req, res, (error) => {
-        if (error) {
-            invalids.push(`File upload error: ${error}`)
-            return res.status(500).json({invalids, result:false});
-        }
-        
-        res.status(200).json({msg:'File uploaded', filename, result:true})
-    // code
-    })
-
-    return
+    try{
+        upload(filename).single('licenseimg')(req, res, (error) => {
+            if (error) {
+                console.log(error)
+                invalids.push(`File upload error: ${error}`)
+                return res.status(500).json({invalids, result:false});
+            }
+            
+            res.status(200).json({msg:'File uploaded', filename, result:true})
+        // code
+        })
+    
+        return
+    }catch(error){
+        console.log(error)
+        invalids.push(`File upload error: ${error}`)
+        return res.status(500).json({invalids, result:false});
+    }
     
 })
 
