@@ -31,6 +31,5 @@
     "v-calendar-scheduler": "^0.7.4",
     "v-click-outside": "^3.0.1",
     "vue-qrcode-reader": "^2.3.16"
-  },
-  "devDependencies": {}
+  }
 }

@@ -270,7 +270,9 @@
 
 
 
+
 export default {
+    
     data () {
       return {
         e6: 1,
@@ -303,8 +305,14 @@ export default {
         
       }
     },
+    mounted(){
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+       
+    },
 
     methods:{
+        
         submit1(){
             this.e6 = 2
         },
@@ -352,26 +360,35 @@ export default {
             const licenseimg = new FormData()
             licenseimg.append('licenseimg', this.selectedFileimg)
             
-            this.owner.driverlicenseimg = '.' + this.selectedFileimg.name.split('.').pop()
+            const extensionName = this.selectedFileimg.name.split('.').pop()
+
+            this.owner.driverlicenseimg = '.' + extensionName
 
             this.$axios.post('/owner/new', this.owner)
             .then(async res => {
                 this.$store.commit("G_LOADER", false)
 
                 if(!res.data.result) {
-                    
                     return this.invalids = res.data.invalids
                 }
-                console.log("ownder information", res.data)
-                let resfile = await this.$axios.post('/owner/singleupload?filename='+res.data.filename, licenseimg)
-                
-                if(resfile.data.result) {
-                    this.submitted = true
-                    return 
-                }
-
+                // console.log("owner information", res.data)
+                // let resfile = await this.$axios.post('/owner/singleupload?filename='+res.data.filename, licenseimg)
                 this.invalids = res.data.invalids
                 console.log(this.invalids)
+                
+
+                const filename = res.data.filename
+                
+                this.uploadImage(filename + this.owner.driverlicenseimg)
+                // if(resfile.data.result) {
+                //     this.submitted = true
+                //     return 
+                // }
+
+                this.submitted = true
+                //     return 
+
+                
             })
             .catch(err => {
                 console.log(err)
@@ -379,7 +396,27 @@ export default {
             })
         },
 
+        uploadImage(filename){
+            alert(this.selectedFileimg.type)
+            console.log('FILETYPE FIREBASE', this.selectedFileimg.type)
+            const ref = this.$store.state.firebase.storage().ref()
 
+            const file = this.$refs.licenseimg.files[0]
+
+            console.log('FILE FIREBASE', file)
+            const metadata = {
+                contentType:this.selectedFileimg.type
+            }
+
+            const task = ref.child(filename).put(file, metadata)
+
+            task
+            .then(snapshot => snapshot.ref.getDownloadURL())
+            .then(url => {
+                console.log("URL", url)
+                
+            })
+        },
         
     },
 

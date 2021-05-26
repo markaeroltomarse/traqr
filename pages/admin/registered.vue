@@ -53,6 +53,9 @@ export default {
             registered
         }
     },
+    mounted(){
+        
+    },
 
     methods:{
         view(owner){

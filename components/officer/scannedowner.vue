@@ -2,7 +2,7 @@
   <section class="overlay bg-light" data-aos="fade-up">
 
     <section class="imgzoom overlay text-center" v-if="imgzoom">
-        <v-img :src="require('@/assets/uploads/' + owner.driverlicenseimg)" @dblclick="imgzoom = false"/>
+        <v-img :src="image" @dblclick="imgzoom = false"/>
         <v-btn small @click="imgzoom = false">
             Close
         </v-btn>
@@ -21,7 +21,7 @@
         
         <p><b>Owner information</b></p>
         
-        <div class="license-img" :style="{backgroundImage:`url('${require('@/assets/uploads/' + owner.driverlicenseimg)}')`}" @click="imgzoom = true">
+        <div class="license-img" :style="{backgroundImage:`url('${image}')`}" @click="imgzoom = true">
 
         </div>
 
@@ -163,6 +163,7 @@
 
 <script>
 export default {
+    
     data(){
         return {
             violation:{
@@ -173,6 +174,7 @@ export default {
             },
             scansound:null,
             imgzoom:false,
+            image:''
         }
     },
     props:{
@@ -180,6 +182,10 @@ export default {
             type:Object,
             
         }
+    },
+
+    created(){
+        this.retrieveImg(this.owner.driverlicenseimg)
     },
     methods:{
         async submit(){
@@ -209,7 +215,24 @@ export default {
             }catch(err){
                 alert('Connection time out')
             }
+        },
+
+        async retrieveImg(filename){
+            // Create a reference to the file we want to download
+            const ref = this.$store.state.firebase.storage().ref()
+            var retrieve = ref.child(filename);
+
+
+            const image = ''
+            // Get the download URL
+            let res = await retrieve.getDownloadURL()
+            console.log('RES FIREBASE', res)
+
+            this.image = res
+
+            
         }
+
 
         
     },

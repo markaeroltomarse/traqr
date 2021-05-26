@@ -44,6 +44,10 @@ app.use('/api/officer', require('./api/officer'))
 //officer
 app.use('/api/owner', require('./api/owner'))
 
+
+
+
+
 console.log("EXPRESS API RUNNING")
 
 module.exports = {

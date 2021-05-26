@@ -2,6 +2,7 @@ export const strict = false
 
 export const state = () => ({
     g_loader:false,
+    firebase:null
 })
 
 export const getters = {}

@@ -18,6 +18,7 @@ export default {
       { rel: "stylesheet", type: "text/css", href: "https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" },
     ],
     
+    
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
