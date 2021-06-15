@@ -9,21 +9,21 @@ const path = require('path')
 
 
 
-// function upload(filename){
+function upload(filename){
     
-//     let storage = multer.diskStorage({
-//         destination: function (req, file, cb) {           
-//           cb(null, `./assets/uploads/`) // 
-//         },
-//         filename: function (req, file, cb) {
-//             console.log(file)
-//             cb(null, filename + path.extname(file.originalname)) //Appending extension
-//         }
-//     })
+    let storage = multer.diskStorage({
+        destination: function (req, file, cb) {           
+          cb(null, `./assets/uploads/`) // 
+        },
+        filename: function (req, file, cb) {
+            console.log(file)
+            cb(null, filename + path.extname(file.originalname)) //Appending extension
+        }
+    })
     
-//     //Multer middleware config
-//     return multer({ storage: storage})
-// }
+    //Multer middleware config
+    return multer({ storage: storage})
+}
 
 
 
@@ -61,27 +61,27 @@ router.post('/violations', async (req, res) => {
 
 //SINGE FILE UPLOAD ROUTES
 router.post('/singleupload',  async (req, res) => {
-    // let invalids = []
-    // const filename = req.query.filename
+    let invalids = []
+    const filename = req.query.filename
     
-    // try{
-    //     upload(filename).single('licenseimg')(req, res, (error) => {
-    //         if (error) {
-    //             console.log(error)
-    //             invalids.push(`File upload error: ${error}`)
-    //             return res.status(500).json({invalids, result:false});
-    //         }
+    try{
+        upload(filename).single('licenseimg')(req, res, (error) => {
+            if (error) {
+                console.log(error)
+                invalids.push(`File upload error: ${error}`)
+                return res.status(500).json({invalids, result:false});
+            }
             
-    //         res.status(200).json({msg:'File uploaded', filename, result:true})
-    //     // code
-    //     })
+            res.status(200).json({msg:'File uploaded', filename, result:true})
+        // code
+        })
     
-    //     return
-    // }catch(error){
-    //     console.log(error)
-    //     invalids.push(`File upload error: ${error}`)
-    //     return res.status(500).json({invalids, result:false});
-    // }
+        return
+    }catch(error){
+        console.log(error)
+        invalids.push(`File upload error: ${error}`)
+        return res.status(500).json({invalids, result:false});
+    }
     
 })
 

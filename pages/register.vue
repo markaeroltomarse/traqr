@@ -336,8 +336,6 @@ export default {
             }catch(err){
                 console.log(err)
             }
-            
-            
         },
 
         async submit3(){
