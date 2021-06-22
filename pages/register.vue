@@ -163,7 +163,8 @@
                     <hr>
 
                     <v-text-field
-                        type="number"
+                        type="text"
+                        @keyup="plateNum()"
                         dense
                         label="Plate Number"
                         required
@@ -415,6 +416,11 @@ export default {
                 
             })
         },
+
+
+        plateNum(){
+            this.owner.plate_number = this.owner.plate_number.toUpperCase()
+        }
         
     },
 

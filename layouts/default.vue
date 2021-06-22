@@ -40,7 +40,7 @@ export default {
 
   methods:{
     openSB(){
-      this.userSB = !this.userSB
+      this.userSB =!this.userSB
       
     },
     initFirebase(){

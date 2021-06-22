@@ -32,7 +32,7 @@
             
           <div class="text-center px-3">
               <v-btn color="success" block rounded class="my-3" >
-                  Infomation
+                  Information
               </v-btn>
 
               <v-btn color="success" block rounded class="my-3" to="/officer/prevscan">

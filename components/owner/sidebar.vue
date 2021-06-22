@@ -39,7 +39,7 @@
               </v-btn>
 
               <v-btn color="success" block rounded class="my-3" to="/owner/information">
-                  Infomation
+                  Information
               </v-btn>
 
               <v-btn color="success" block rounded class="my-3" to="/owner/violations">
