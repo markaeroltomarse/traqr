@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Models = require("../../models/index");
+const Models = require("../models/index");
 const { Officers, Owners, Violations } = Models;
 
 const uuid = require("uuid");

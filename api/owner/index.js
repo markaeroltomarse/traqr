@@ -3,7 +3,7 @@ const router = require("express").Router();
 const multer = require("multer");
 const uuid = require("uuid");
 const moment = require("moment");
-const { Officers, Owners, Violations } = require("../../models/index");
+const { Officers, Owners, Violations } = require("../models");
 const path = require("path");
 
 function upload(filename) {
