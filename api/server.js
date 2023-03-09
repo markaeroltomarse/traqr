@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const moment = require("moment");
-
+const path = require("path");
 const cors = require("cors");
 //DOT ENV
 require("dotenv/config");
@@ -41,13 +41,13 @@ app.use(
 );
 
 //authentications
-app.use("/api/auth", require("./api/authen"));
+app.use("/api/auth", require(path.join(__dirname, "./authen")));
 
 //officer
-app.use("/api/officer", require("./api/officer"));
+app.use("/api/officer", require(path.join(__dirname, "./officer")));
 
 //officer
-app.use("/api/owner", require("./api/owner"));
+app.use("/api/owner", require(path.join(__dirname, "./owner")));
 
 console.log("EXPRESS API RUNNING");
 
