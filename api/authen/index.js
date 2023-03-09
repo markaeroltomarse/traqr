@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
-const Models = require("../../models/index");
+const Models = require("../models/index");
 
 const { Officers, Owners } = Models;
 
